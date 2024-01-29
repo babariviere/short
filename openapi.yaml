@@ -63,9 +63,5 @@ paths:
                 properties:
                   message:
                     type: string
-              examples:
-                Example 1:
-                  value:
-                    message: URL already exist.
       description: Create a shorten URL.
       operationId: createShortURL
