@@ -15,8 +15,8 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *Server) decodeCreatePostRequest(r *http.Request) (
-	req *CreatePostReq,
+func (s *Server) decodeCreateShortURLRequest(r *http.Request) (
+	req *CreateShortURLReq,
 	close func() error,
 	rerr error,
 ) {
@@ -55,7 +55,7 @@ func (s *Server) decodeCreatePostRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request CreatePostReq
+		var request CreateShortURLReq
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err

@@ -13,14 +13,14 @@ import (
 )
 
 // Encode implements json.Marshaler.
-func (s *CreatePostBadRequest) Encode(e *jx.Encoder) {
+func (s *CreateShortURLBadRequest) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *CreatePostBadRequest) encodeFields(e *jx.Encoder) {
+func (s *CreateShortURLBadRequest) encodeFields(e *jx.Encoder) {
 	{
 		if s.Message.Set {
 			e.FieldStart("message")
@@ -29,14 +29,14 @@ func (s *CreatePostBadRequest) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfCreatePostBadRequest = [1]string{
+var jsonFieldsNameOfCreateShortURLBadRequest = [1]string{
 	0: "message",
 }
 
-// Decode decodes CreatePostBadRequest from json.
-func (s *CreatePostBadRequest) Decode(d *jx.Decoder) error {
+// Decode decodes CreateShortURLBadRequest from json.
+func (s *CreateShortURLBadRequest) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode CreatePostBadRequest to nil")
+		return errors.New("invalid: unable to decode CreateShortURLBadRequest to nil")
 	}
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
@@ -56,34 +56,34 @@ func (s *CreatePostBadRequest) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode CreatePostBadRequest")
+		return errors.Wrap(err, "decode CreateShortURLBadRequest")
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *CreatePostBadRequest) MarshalJSON() ([]byte, error) {
+func (s *CreateShortURLBadRequest) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreatePostBadRequest) UnmarshalJSON(data []byte) error {
+func (s *CreateShortURLBadRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
 // Encode implements json.Marshaler.
-func (s *CreatePostCreated) Encode(e *jx.Encoder) {
+func (s *CreateShortURLCreated) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *CreatePostCreated) encodeFields(e *jx.Encoder) {
+func (s *CreateShortURLCreated) encodeFields(e *jx.Encoder) {
 	{
 		if s.Shorten.Set {
 			e.FieldStart("shorten")
@@ -92,14 +92,14 @@ func (s *CreatePostCreated) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfCreatePostCreated = [1]string{
+var jsonFieldsNameOfCreateShortURLCreated = [1]string{
 	0: "shorten",
 }
 
-// Decode decodes CreatePostCreated from json.
-func (s *CreatePostCreated) Decode(d *jx.Decoder) error {
+// Decode decodes CreateShortURLCreated from json.
+func (s *CreateShortURLCreated) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode CreatePostCreated to nil")
+		return errors.New("invalid: unable to decode CreateShortURLCreated to nil")
 	}
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
@@ -119,48 +119,48 @@ func (s *CreatePostCreated) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode CreatePostCreated")
+		return errors.Wrap(err, "decode CreateShortURLCreated")
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *CreatePostCreated) MarshalJSON() ([]byte, error) {
+func (s *CreateShortURLCreated) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreatePostCreated) UnmarshalJSON(data []byte) error {
+func (s *CreateShortURLCreated) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
 // Encode implements json.Marshaler.
-func (s *CreatePostReq) Encode(e *jx.Encoder) {
+func (s *CreateShortURLReq) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *CreatePostReq) encodeFields(e *jx.Encoder) {
+func (s *CreateShortURLReq) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("url")
 		e.Str(s.URL)
 	}
 }
 
-var jsonFieldsNameOfCreatePostReq = [1]string{
+var jsonFieldsNameOfCreateShortURLReq = [1]string{
 	0: "url",
 }
 
-// Decode decodes CreatePostReq from json.
-func (s *CreatePostReq) Decode(d *jx.Decoder) error {
+// Decode decodes CreateShortURLReq from json.
+func (s *CreateShortURLReq) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode CreatePostReq to nil")
+		return errors.New("invalid: unable to decode CreateShortURLReq to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -183,7 +183,7 @@ func (s *CreatePostReq) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode CreatePostReq")
+		return errors.Wrap(err, "decode CreateShortURLReq")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
@@ -200,8 +200,8 @@ func (s *CreatePostReq) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfCreatePostReq) {
-					name = jsonFieldsNameOfCreatePostReq[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfCreateShortURLReq) {
+					name = jsonFieldsNameOfCreateShortURLReq[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -222,14 +222,14 @@ func (s *CreatePostReq) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *CreatePostReq) MarshalJSON() ([]byte, error) {
+func (s *CreateShortURLReq) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreatePostReq) UnmarshalJSON(data []byte) error {
+func (s *CreateShortURLReq) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

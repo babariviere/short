@@ -17,6 +17,7 @@ paths:
         "404":
           description: Not Found
       description: Redirect client to long URL.
+      operationId: redirectLongURL
     parameters:
       - schema:
           type: string
@@ -64,3 +65,5 @@ paths:
                 Example 1:
                   value:
                     message: URL already exist.
+      description: Create a shorten URL.
+      operationId: createShortURL

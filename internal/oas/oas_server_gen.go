@@ -8,16 +8,18 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
-	// CreatePost implements POST /create operation.
+	// CreateShortURL implements createShortURL operation.
+	//
+	// Create a shorten URL.
 	//
 	// POST /create
-	CreatePost(ctx context.Context, req *CreatePostReq) (CreatePostRes, error)
-	// HashGet implements GET /{hash} operation.
+	CreateShortURL(ctx context.Context, req *CreateShortURLReq) (CreateShortURLRes, error)
+	// RedirectLongURL implements redirectLongURL operation.
 	//
 	// Redirect client to long URL.
 	//
 	// GET /{hash}
-	HashGet(ctx context.Context, params HashGetParams) (HashGetRes, error)
+	RedirectLongURL(ctx context.Context, params RedirectLongURLParams) (RedirectLongURLRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

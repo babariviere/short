@@ -17,19 +17,23 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/ogen-go/ogen/ogenerrors"
+	"github.com/ogen-go/ogen/otelogen"
 )
 
-// handleCreatePostRequest handles POST /create operation.
+// handleCreateShortURLRequest handles createShortURL operation.
+//
+// Create a shorten URL.
 //
 // POST /create
-func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleCreateShortURLRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createShortURL"),
 		semconv.HTTPMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/create"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreatePost",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreateShortURL",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -54,11 +58,11 @@ func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w htt
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "CreatePost",
-			ID:   "",
+			Name: "CreateShortURL",
+			ID:   "createShortURL",
 		}
 	)
-	request, close, err := s.decodeCreatePostRequest(r)
+	request, close, err := s.decodeCreateShortURLRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -74,22 +78,22 @@ func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w htt
 		}
 	}()
 
-	var response CreatePostRes
+	var response CreateShortURLRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "CreatePost",
+			OperationName:    "CreateShortURL",
 			OperationSummary: "",
-			OperationID:      "",
+			OperationID:      "createShortURL",
 			Body:             request,
 			Params:           middleware.Parameters{},
 			Raw:              r,
 		}
 
 		type (
-			Request  = *CreatePostReq
+			Request  = *CreateShortURLReq
 			Params   = struct{}
-			Response = CreatePostRes
+			Response = CreateShortURLRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -100,12 +104,12 @@ func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w htt
 			mreq,
 			nil,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.CreatePost(ctx, request)
+				response, err = s.h.CreateShortURL(ctx, request)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.CreatePost(ctx, request)
+		response, err = s.h.CreateShortURL(ctx, request)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -113,7 +117,7 @@ func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w htt
 		return
 	}
 
-	if err := encodeCreatePostResponse(response, w, span); err != nil {
+	if err := encodeCreateShortURLResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -122,19 +126,20 @@ func (s *Server) handleCreatePostRequest(args [0]string, argsEscaped bool, w htt
 	}
 }
 
-// handleHashGetRequest handles GET /{hash} operation.
+// handleRedirectLongURLRequest handles redirectLongURL operation.
 //
 // Redirect client to long URL.
 //
 // GET /{hash}
-func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleRedirectLongURLRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("redirectLongURL"),
 		semconv.HTTPMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/{hash}"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "HashGet",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "RedirectLongURL",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -159,11 +164,11 @@ func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.R
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "HashGet",
-			ID:   "",
+			Name: "RedirectLongURL",
+			ID:   "redirectLongURL",
 		}
 	)
-	params, err := decodeHashGetParams(args, argsEscaped, r)
+	params, err := decodeRedirectLongURLParams(args, argsEscaped, r)
 	if err != nil {
 		err = &ogenerrors.DecodeParamsError{
 			OperationContext: opErrContext,
@@ -174,13 +179,13 @@ func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.R
 		return
 	}
 
-	var response HashGetRes
+	var response RedirectLongURLRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "HashGet",
+			OperationName:    "RedirectLongURL",
 			OperationSummary: "",
-			OperationID:      "",
+			OperationID:      "redirectLongURL",
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
@@ -193,8 +198,8 @@ func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.R
 
 		type (
 			Request  = struct{}
-			Params   = HashGetParams
-			Response = HashGetRes
+			Params   = RedirectLongURLParams
+			Response = RedirectLongURLRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -203,14 +208,14 @@ func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.R
 		](
 			m,
 			mreq,
-			unpackHashGetParams,
+			unpackRedirectLongURLParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.HashGet(ctx, params)
+				response, err = s.h.RedirectLongURL(ctx, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.HashGet(ctx, params)
+		response, err = s.h.RedirectLongURL(ctx, params)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -218,7 +223,7 @@ func (s *Server) handleHashGetRequest(args [1]string, argsEscaped bool, w http.R
 		return
 	}
 
-	if err := encodeHashGetResponse(response, w, span); err != nil {
+	if err := encodeRedirectLongURLResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

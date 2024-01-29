@@ -17,21 +17,24 @@ import (
 
 	"github.com/ogen-go/ogen/conv"
 	ht "github.com/ogen-go/ogen/http"
+	"github.com/ogen-go/ogen/otelogen"
 	"github.com/ogen-go/ogen/uri"
 )
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
-	// CreatePost invokes POST /create operation.
+	// CreateShortURL invokes createShortURL operation.
+	//
+	// Create a shorten URL.
 	//
 	// POST /create
-	CreatePost(ctx context.Context, request *CreatePostReq) (CreatePostRes, error)
-	// HashGet invokes GET /{hash} operation.
+	CreateShortURL(ctx context.Context, request *CreateShortURLReq) (CreateShortURLRes, error)
+	// RedirectLongURL invokes redirectLongURL operation.
 	//
 	// Redirect client to long URL.
 	//
 	// GET /{hash}
-	HashGet(ctx context.Context, params HashGetParams) (HashGetRes, error)
+	RedirectLongURL(ctx context.Context, params RedirectLongURLParams) (RedirectLongURLRes, error)
 }
 
 // Client implements OAS client.
@@ -82,16 +85,19 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
-// CreatePost invokes POST /create operation.
+// CreateShortURL invokes createShortURL operation.
+//
+// Create a shorten URL.
 //
 // POST /create
-func (c *Client) CreatePost(ctx context.Context, request *CreatePostReq) (CreatePostRes, error) {
-	res, err := c.sendCreatePost(ctx, request)
+func (c *Client) CreateShortURL(ctx context.Context, request *CreateShortURLReq) (CreateShortURLRes, error) {
+	res, err := c.sendCreateShortURL(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreatePost(ctx context.Context, request *CreatePostReq) (res CreatePostRes, err error) {
+func (c *Client) sendCreateShortURL(ctx context.Context, request *CreateShortURLReq) (res CreateShortURLRes, err error) {
 	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createShortURL"),
 		semconv.HTTPMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/create"),
 	}
@@ -108,7 +114,7 @@ func (c *Client) sendCreatePost(ctx context.Context, request *CreatePostReq) (re
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CreatePost",
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateShortURL",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -134,7 +140,7 @@ func (c *Client) sendCreatePost(ctx context.Context, request *CreatePostReq) (re
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodeCreatePostRequest(request, r); err != nil {
+	if err := encodeCreateShortURLRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
 	}
 
@@ -146,7 +152,7 @@ func (c *Client) sendCreatePost(ctx context.Context, request *CreatePostReq) (re
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeCreatePostResponse(resp)
+	result, err := decodeCreateShortURLResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -154,18 +160,19 @@ func (c *Client) sendCreatePost(ctx context.Context, request *CreatePostReq) (re
 	return result, nil
 }
 
-// HashGet invokes GET /{hash} operation.
+// RedirectLongURL invokes redirectLongURL operation.
 //
 // Redirect client to long URL.
 //
 // GET /{hash}
-func (c *Client) HashGet(ctx context.Context, params HashGetParams) (HashGetRes, error) {
-	res, err := c.sendHashGet(ctx, params)
+func (c *Client) RedirectLongURL(ctx context.Context, params RedirectLongURLParams) (RedirectLongURLRes, error) {
+	res, err := c.sendRedirectLongURL(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendHashGet(ctx context.Context, params HashGetParams) (res HashGetRes, err error) {
+func (c *Client) sendRedirectLongURL(ctx context.Context, params RedirectLongURLParams) (res RedirectLongURLRes, err error) {
 	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("redirectLongURL"),
 		semconv.HTTPMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/{hash}"),
 	}
@@ -182,7 +189,7 @@ func (c *Client) sendHashGet(ctx context.Context, params HashGetParams) (res Has
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "HashGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, "RedirectLongURL",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -235,7 +242,7 @@ func (c *Client) sendHashGet(ctx context.Context, params HashGetParams) (res Has
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeHashGetResponse(resp)
+	result, err := decodeRedirectLongURLResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

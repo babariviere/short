@@ -13,18 +13,20 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
-// CreatePost implements POST /create operation.
+// CreateShortURL implements createShortURL operation.
+//
+// Create a shorten URL.
 //
 // POST /create
-func (UnimplementedHandler) CreatePost(ctx context.Context, req *CreatePostReq) (r CreatePostRes, _ error) {
+func (UnimplementedHandler) CreateShortURL(ctx context.Context, req *CreateShortURLReq) (r CreateShortURLRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// HashGet implements GET /{hash} operation.
+// RedirectLongURL implements redirectLongURL operation.
 //
 // Redirect client to long URL.
 //
 // GET /{hash}
-func (UnimplementedHandler) HashGet(ctx context.Context, params HashGetParams) (r HashGetRes, _ error) {
+func (UnimplementedHandler) RedirectLongURL(ctx context.Context, params RedirectLongURLParams) (r RedirectLongURLRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

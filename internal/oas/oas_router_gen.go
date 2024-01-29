@@ -73,7 +73,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					// Leaf node.
 					switch r.Method {
 					case "POST":
-						s.handleCreatePostRequest([0]string{}, elemIsEscaped, w, r)
+						s.handleCreateShortURLRequest([0]string{}, elemIsEscaped, w, r)
 					default:
 						s.notAllowed(w, r, "POST")
 					}
@@ -92,7 +92,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				// Leaf node.
 				switch r.Method {
 				case "GET":
-					s.handleHashGetRequest([1]string{
+					s.handleRedirectLongURLRequest([1]string{
 						args[0],
 					}, elemIsEscaped, w, r)
 				default:
@@ -206,10 +206,10 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				if len(elem) == 0 {
 					switch method {
 					case "POST":
-						// Leaf: CreatePost
-						r.name = "CreatePost"
+						// Leaf: CreateShortURL
+						r.name = "CreateShortURL"
 						r.summary = ""
-						r.operationID = ""
+						r.operationID = "createShortURL"
 						r.pathPattern = "/create"
 						r.args = args
 						r.count = 0
@@ -229,10 +229,10 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 			if len(elem) == 0 {
 				switch method {
 				case "GET":
-					// Leaf: HashGet
-					r.name = "HashGet"
+					// Leaf: RedirectLongURL
+					r.name = "RedirectLongURL"
 					r.summary = ""
-					r.operationID = ""
+					r.operationID = "redirectLongURL"
 					r.pathPattern = "/{hash}"
 					r.args = args
 					r.count = 1

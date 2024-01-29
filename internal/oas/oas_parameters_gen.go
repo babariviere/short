@@ -15,13 +15,13 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-// HashGetParams is parameters of GET /{hash} operation.
-type HashGetParams struct {
+// RedirectLongURLParams is parameters of redirectLongURL operation.
+type RedirectLongURLParams struct {
 	// Hash of shorten URL.
 	Hash string
 }
 
-func unpackHashGetParams(packed middleware.Parameters) (params HashGetParams) {
+func unpackRedirectLongURLParams(packed middleware.Parameters) (params RedirectLongURLParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "hash",
@@ -32,7 +32,7 @@ func unpackHashGetParams(packed middleware.Parameters) (params HashGetParams) {
 	return params
 }
 
-func decodeHashGetParams(args [1]string, argsEscaped bool, r *http.Request) (params HashGetParams, _ error) {
+func decodeRedirectLongURLParams(args [1]string, argsEscaped bool, r *http.Request) (params RedirectLongURLParams, _ error) {
 	// Decode path: hash.
 	if err := func() error {
 		param := args[0]

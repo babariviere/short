@@ -16,7 +16,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func decodeCreatePostResponse(resp *http.Response) (res CreatePostRes, _ error) {
+func decodeCreateShortURLResponse(resp *http.Response) (res CreateShortURLRes, _ error) {
 	switch resp.StatusCode {
 	case 201:
 		// Code 201.
@@ -32,7 +32,7 @@ func decodeCreatePostResponse(resp *http.Response) (res CreatePostRes, _ error) 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CreatePostCreated
+			var response CreateShortURLCreated
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -67,7 +67,7 @@ func decodeCreatePostResponse(resp *http.Response) (res CreatePostRes, _ error) 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CreatePostBadRequest
+			var response CreateShortURLBadRequest
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -92,11 +92,11 @@ func decodeCreatePostResponse(resp *http.Response) (res CreatePostRes, _ error) 
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeHashGetResponse(resp *http.Response) (res HashGetRes, _ error) {
+func decodeRedirectLongURLResponse(resp *http.Response) (res RedirectLongURLRes, _ error) {
 	switch resp.StatusCode {
 	case 307:
 		// Code 307.
-		var wrapper HashGetTemporaryRedirect
+		var wrapper RedirectLongURLTemporaryRedirect
 		h := uri.NewHeaderDecoder(resp.Header)
 		// Parse "Location" header.
 		{
@@ -138,7 +138,7 @@ func decodeHashGetResponse(resp *http.Response) (res HashGetRes, _ error) {
 		return &wrapper, nil
 	case 404:
 		// Code 404.
-		return &HashGetNotFound{}, nil
+		return &RedirectLongURLNotFound{}, nil
 	}
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }

@@ -2,75 +2,53 @@
 
 package oas
 
-type CreatePostBadRequest struct {
+type CreateShortURLBadRequest struct {
 	Message OptString `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *CreatePostBadRequest) GetMessage() OptString {
+func (s *CreateShortURLBadRequest) GetMessage() OptString {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *CreatePostBadRequest) SetMessage(val OptString) {
+func (s *CreateShortURLBadRequest) SetMessage(val OptString) {
 	s.Message = val
 }
 
-func (*CreatePostBadRequest) createPostRes() {}
+func (*CreateShortURLBadRequest) createShortURLRes() {}
 
-type CreatePostCreated struct {
+type CreateShortURLCreated struct {
 	// Created shorten URL. Going to this URL should redirect to URL from request body.
 	Shorten OptString `json:"shorten"`
 }
 
 // GetShorten returns the value of Shorten.
-func (s *CreatePostCreated) GetShorten() OptString {
+func (s *CreateShortURLCreated) GetShorten() OptString {
 	return s.Shorten
 }
 
 // SetShorten sets the value of Shorten.
-func (s *CreatePostCreated) SetShorten(val OptString) {
+func (s *CreateShortURLCreated) SetShorten(val OptString) {
 	s.Shorten = val
 }
 
-func (*CreatePostCreated) createPostRes() {}
+func (*CreateShortURLCreated) createShortURLRes() {}
 
-type CreatePostReq struct {
+type CreateShortURLReq struct {
 	// URL to shorten.
 	URL string `json:"url"`
 }
 
 // GetURL returns the value of URL.
-func (s *CreatePostReq) GetURL() string {
+func (s *CreateShortURLReq) GetURL() string {
 	return s.URL
 }
 
 // SetURL sets the value of URL.
-func (s *CreatePostReq) SetURL(val string) {
+func (s *CreateShortURLReq) SetURL(val string) {
 	s.URL = val
 }
-
-// HashGetNotFound is response for HashGet operation.
-type HashGetNotFound struct{}
-
-func (*HashGetNotFound) hashGetRes() {}
-
-// HashGetTemporaryRedirect is response for HashGet operation.
-type HashGetTemporaryRedirect struct {
-	Location OptString
-}
-
-// GetLocation returns the value of Location.
-func (s *HashGetTemporaryRedirect) GetLocation() OptString {
-	return s.Location
-}
-
-// SetLocation sets the value of Location.
-func (s *HashGetTemporaryRedirect) SetLocation(val OptString) {
-	s.Location = val
-}
-
-func (*HashGetTemporaryRedirect) hashGetRes() {}
 
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
@@ -117,3 +95,25 @@ func (o OptString) Or(d string) string {
 	}
 	return d
 }
+
+// RedirectLongURLNotFound is response for RedirectLongURL operation.
+type RedirectLongURLNotFound struct{}
+
+func (*RedirectLongURLNotFound) redirectLongURLRes() {}
+
+// RedirectLongURLTemporaryRedirect is response for RedirectLongURL operation.
+type RedirectLongURLTemporaryRedirect struct {
+	Location OptString
+}
+
+// GetLocation returns the value of Location.
+func (s *RedirectLongURLTemporaryRedirect) GetLocation() OptString {
+	return s.Location
+}
+
+// SetLocation sets the value of Location.
+func (s *RedirectLongURLTemporaryRedirect) SetLocation(val OptString) {
+	s.Location = val
+}
+
+func (*RedirectLongURLTemporaryRedirect) redirectLongURLRes() {}

@@ -14,9 +14,9 @@ import (
 	"github.com/ogen-go/ogen/uri"
 )
 
-func encodeCreatePostResponse(response CreatePostRes, w http.ResponseWriter, span trace.Span) error {
+func encodeCreateShortURLResponse(response CreateShortURLRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CreatePostCreated:
+	case *CreateShortURLCreated:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(201)
 		span.SetStatus(codes.Ok, http.StatusText(201))
@@ -29,7 +29,7 @@ func encodeCreatePostResponse(response CreatePostRes, w http.ResponseWriter, spa
 
 		return nil
 
-	case *CreatePostBadRequest:
+	case *CreateShortURLBadRequest:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
@@ -47,9 +47,9 @@ func encodeCreatePostResponse(response CreatePostRes, w http.ResponseWriter, spa
 	}
 }
 
-func encodeHashGetResponse(response HashGetRes, w http.ResponseWriter, span trace.Span) error {
+func encodeRedirectLongURLResponse(response RedirectLongURLRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *HashGetTemporaryRedirect:
+	case *RedirectLongURLTemporaryRedirect:
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -74,7 +74,7 @@ func encodeHashGetResponse(response HashGetRes, w http.ResponseWriter, span trac
 
 		return nil
 
-	case *HashGetNotFound:
+	case *RedirectLongURLNotFound:
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
