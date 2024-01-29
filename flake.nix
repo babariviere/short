@@ -21,6 +21,7 @@
             alejandra.enable = true;
             deadnix.enable = true;
             gofumpt.enable = true;
+            prettier.enable = true;
           };
         };
 
@@ -29,6 +30,17 @@
             # Go tools
             go
             gopls
+
+            # Database
+            atlas
+            sqlc
+            postgresql_16
+
+            # Lint
+            golangci-lint
+
+            # Tools
+            just
           ];
         };
       };

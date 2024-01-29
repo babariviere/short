@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "sql/query.sql"
+    schema: "sql/schema.sql"
+    database:
+      uri: postgres://short:short@localhost:5432/short
+    gen:
+      go:
+        package: "db"
+        out: "internal/db"
+        sql_package: "pgx/v5"
+    rules:
+      - sqlc/db-prepare
