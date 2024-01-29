@@ -11,6 +11,9 @@ run:
 lint:
   golangci-lint run
 
+gen:
+  go generate ./...
+
 sqlc:
   sqlc generate
   sqlc vet
