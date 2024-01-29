@@ -26,3 +26,20 @@ docker compose up -d
 just migrate # or atlas migrate apply --env local
 go run .
 ```
+
+## Accessing the docs
+
+The docs is using the `openapi.yaml` provided in the root directory. A web UI is available at http://localhost:8080/docs.
+It's using Rapidoc under the hood.
+
+## Testing
+
+You can simply test using:
+
+```sh
+# ensure postgres is up
+docker compose up -d
+go test ./...
+```
+
+It will create database on the fly for each test.
