@@ -4,8 +4,6 @@
 
 package db
 
-import ()
-
 type Url struct {
 	ID      int32
 	Hash    string
