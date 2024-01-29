@@ -20,3 +20,22 @@ func (q *Queries) GetURLByHash(ctx context.Context, hash string) (Url, error) {
 	err := row.Scan(&i.ID, &i.Hash, &i.LongUrl)
 	return i, err
 }
+
+const insertURL = `-- name: InsertURL :one
+INSERT INTO urls (hash, long_url)
+VALUES ($1, $2)
+ON CONFLICT (hash) DO NOTHING
+RETURNING id, hash, long_url
+`
+
+type InsertURLParams struct {
+	Hash    string
+	LongUrl string
+}
+
+func (q *Queries) InsertURL(ctx context.Context, arg InsertURLParams) (Url, error) {
+	row := q.db.QueryRow(ctx, insertURL, arg.Hash, arg.LongUrl)
+	var i Url
+	err := row.Scan(&i.ID, &i.Hash, &i.LongUrl)
+	return i, err
+}

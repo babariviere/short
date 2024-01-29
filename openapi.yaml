@@ -4,17 +4,17 @@ info:
   version: 0.1.0
   description: An URL shortener service.
 paths:
-  "/{hash}":
+  '/{hash}':
     get:
       responses:
-        "307":
+        '307':
           description: Redirect client to long URL.
           headers:
             Location:
               schema:
                 type: string
               description: Long URL
-        "404":
+        '404':
           description: Not Found
       description: Redirect client to long URL.
       operationId: redirectLongURL
@@ -38,11 +38,11 @@ paths:
                 url:
                   type: string
                   description: URL to shorten
-                  example: "https://example.com"
+                  example: 'https://example.com'
               required:
                 - url
       responses:
-        "201":
+        '201':
           description: Succesfully created shorten URL.
           content:
             application/json:
@@ -52,7 +52,9 @@ paths:
                   shorten:
                     type: string
                     description: Created shorten URL. Going to this URL should redirect to URL from request body.
-        "400":
+                required:
+                  - shorten
+        '400':
           description: Bad Request
           content:
             application/json:

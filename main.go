@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/babariviere/short/internal/api"
 	"github.com/babariviere/short/internal/db"
@@ -19,13 +20,20 @@ func main() {
 		log.Fatalln("DATABASE_URL is not configured.")
 	}
 
+	serverUrl := os.Getenv("SERVER_URL")
+	if serverUrl == "" {
+		serverUrl = "http://localhost:8080"
+	}
+
+	serverUrl = strings.TrimSuffix(serverUrl, "/")
+
 	psql, err := pgx.Connect(context.Background(), psqlUrl)
 	if err != nil {
 		log.Fatalf("cannot connect to database: %v", err)
 	}
 
 	queries := db.New(psql)
-	handler := api.NewHandler(queries)
+	handler := api.NewHandler(serverUrl, queries)
 
 	srv, err := oas.NewServer(handler)
 	if err != nil {

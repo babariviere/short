@@ -20,16 +20,16 @@ func (*CreateShortURLBadRequest) createShortURLRes() {}
 
 type CreateShortURLCreated struct {
 	// Created shorten URL. Going to this URL should redirect to URL from request body.
-	Shorten OptString `json:"shorten"`
+	Shorten string `json:"shorten"`
 }
 
 // GetShorten returns the value of Shorten.
-func (s *CreateShortURLCreated) GetShorten() OptString {
+func (s *CreateShortURLCreated) GetShorten() string {
 	return s.Shorten
 }
 
 // SetShorten sets the value of Shorten.
-func (s *CreateShortURLCreated) SetShorten(val OptString) {
+func (s *CreateShortURLCreated) SetShorten(val string) {
 	s.Shorten = val
 }
 
