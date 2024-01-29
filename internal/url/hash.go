@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// GenerateHash hash the `url` param into a 8 characters base62 using fnv algorithm.
+// GenerateHash hash the `url` param into a base62 string using fnv algorithm.
 func GenerateHash(url string) (string, error) {
 	hasher := fnv.New32a()
 	_, err := hasher.Write([]byte(url))
