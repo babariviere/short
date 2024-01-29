@@ -13,6 +13,10 @@ URL Shortener written in Go.
 > [!NOTE]
 > If you are using [Nix](https://nixos.org/), you can just run `nix develop .` or `direnv allow` if you use Direnv.
 
+## Dev dependencies
+
+- [ogen](https://github.com/ogen-go/ogen#install) to generate OpenAPI server
+
 # Running the app
 
 Once you have installed all requirements, you can simply do:

@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: URL shortener
+  version: 0.1.0
+  description: An URL shortener service.
+paths:
+  "/{hash}":
+    get:
+      responses:
+        "307":
+          description: Redirect client to long URL.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Long URL
+        "404":
+          description: Not Found
+      description: Redirect client to long URL.
+    parameters:
+      - schema:
+          type: string
+        name: hash
+        in: path
+        required: true
+        description: Hash of shorten URL.
+  /create:
+    post:
+      requestBody:
+        description: Create a shorten URL
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: URL to shorten
+                  example: "https://example.com"
+              required:
+                - url
+      responses:
+        "201":
+          description: Succesfully created shorten URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shorten:
+                    type: string
+                    description: Created shorten URL. Going to this URL should redirect to URL from request body.
+              examples: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: URL already exist.
+components:
+  schemas: {}
