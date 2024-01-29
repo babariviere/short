@@ -24,7 +24,7 @@ func (q *Queries) GetURLByHash(ctx context.Context, hash string) (Url, error) {
 const insertURL = `-- name: InsertURL :one
 INSERT INTO urls (hash, long_url)
 VALUES ($1, $2)
-ON CONFLICT (hash) DO NOTHING
+ON CONFLICT (hash) DO UPDATE SET hash = EXCLUDED.hash -- force row to be returned
 RETURNING id, hash, long_url
 `
 

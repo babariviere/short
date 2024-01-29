@@ -5,5 +5,5 @@ WHERE hash = $1;
 -- name: InsertURL :one
 INSERT INTO urls (hash, long_url)
 VALUES ($1, $2)
-ON CONFLICT (hash) DO NOTHING
+ON CONFLICT (hash) DO UPDATE SET hash = EXCLUDED.hash -- force row to be returned
 RETURNING *;

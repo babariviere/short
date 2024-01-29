@@ -50,12 +50,6 @@ func (h *handler) CreateShortURL(ctx context.Context, req *oas.CreateShortURLReq
 		LongUrl: req.URL,
 	})
 	if err != nil {
-		// No row == conflict since we do a "ON CONFLICT DO NOTHING"
-		if errors.Is(err, pgx.ErrNoRows) {
-			return &oas.CreateShortURLBadRequest{
-				Message: oas.NewOptString("URL already exist."),
-			}, nil
-		}
 		return nil, fmt.Errorf("failed to insert url: %w", err)
 	}
 
