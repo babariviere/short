@@ -51,7 +51,6 @@ paths:
                   shorten:
                     type: string
                     description: Created shorten URL. Going to this URL should redirect to URL from request body.
-              examples: {}
         "400":
           description: Bad Request
           content:
@@ -65,5 +64,3 @@ paths:
                 Example 1:
                   value:
                     message: URL already exist.
-components:
-  schemas: {}
