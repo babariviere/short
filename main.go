@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	_ "embed"
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -30,11 +32,11 @@ var rapidocHtml = `
 </html>
 `
 
-func main() {
+func run() error {
 	// This is rude but at least we can configure the database URL securely.
 	psqlUrl := os.Getenv("DATABASE_URL")
 	if psqlUrl == "" {
-		log.Fatalln("DATABASE_URL is not configured.")
+		return errors.New("DATABASE_URL is not configured.")
 	}
 
 	serverUrl := os.Getenv("SERVER_URL")
@@ -46,15 +48,16 @@ func main() {
 
 	psql, err := pgx.Connect(context.Background(), psqlUrl)
 	if err != nil {
-		log.Fatalf("cannot connect to database: %v", err)
+		return fmt.Errorf("cannot connect to database: %v", err)
 	}
+	defer psql.Close(context.Background())
 
 	queries := db.New(psql)
 	handler := api.NewHandler(serverUrl, queries)
 
 	srv, err := oas.NewServer(handler)
 	if err != nil {
-		log.Fatalf("failed te create OpenAPI server: %v", err)
+		return fmt.Errorf("failed te create OpenAPI server: %v", err)
 	}
 
 	mux := http.NewServeMux()
@@ -62,8 +65,12 @@ func main() {
 	mux.Handle("/docs", serveContent([]byte(rapidocHtml), "text/html"))
 	mux.Handle("/docs/openapi.yaml", serveContent(openapiFile, "application/yaml"))
 	log.Println("Listening on :8080")
-	if err = http.ListenAndServe(":8080", mux); err != nil {
-		log.Fatal(err)
+	return http.ListenAndServe(":8080", mux)
+}
+
+func main() {
+	if err := run(); err != nil {
+		log.Fatalln(err)
 	}
 }
 
